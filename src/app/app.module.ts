@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainComponent } from './main/main.component';
 import { FormsModule } from '@angular/forms';
+import { ItemListComponent } from './item-list/item-list.component';
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
-    routesModules
+    routesModules,
+    ItemListComponent
   ],
   imports: [
     BrowserModule,
