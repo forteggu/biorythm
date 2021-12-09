@@ -1,0 +1,17 @@
+form{
+    text-align: center;
+}
+.loginWrapper{
+    text-align: center;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;
+    height: 100vh;
+    margin-top: -2em;
+    justify-content: center;
+}
+
+#loginForm input{
+    border-radius: 0.5em;
+    padding: 1em;
+}

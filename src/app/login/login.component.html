@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="loginWrapper">
+        <div class="col-6">
+            <div class="formContainer">
+                <form (ngSubmit)="onSubmit($event)" id="loginForm">
+                    <div class="">
+                        <div class="form-group">
+                            <label for="loginUsernameInput">Email address</label>
+                            <input type="text" class="form-control" id="loginUsernameInput"
+                                aria-describedby="usernameHelp" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="loginPasswordInput"
+                                placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="text-align-center">
+                        <input class="btn btn-primary" type="submit" value="Login">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
