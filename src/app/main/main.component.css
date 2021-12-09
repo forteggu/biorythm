@@ -1,0 +1,11 @@
+.chartContainer{
+   display: flex;
+   flex-flow: row wrap;
+   justify-content: center;
+   align-items: stretch;
+   align-content: center;
+}
+.chart{
+    max-width: 85vw;
+    max-height: 80vh;
+}
