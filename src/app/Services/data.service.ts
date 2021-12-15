@@ -7,15 +7,33 @@ import { liveQuery } from 'dexie';
 export class DataService {
 
   constructor() { }
+
   async getDefaults() {
-    //await db.initializeMockData();
-    console.log("lanzo getFactors");
-    const f = await this.getFactors();
-    const d = await db.iData.toArray()
+    let d = await db.iData.toArray();
+    if(d.length===0){
+      console.log("No hay registros, cargamos valores por defecto");
+      await db.initializeMockData();
+      d = await db.iData.toArray();
+    }
+    let f = await this.getFactors();
     return {data:d,factors:f};
   }
   
   async getFactors(){
     return await db.iFactors.toArray();
+  }
+  async addFactor(reg:Factors){
+    return await db.iFactors.add(reg);
+  }
+  async addDayData(data:Data[]){
+    await db.iData.bulkAdd(data);
+  }
+
+  async checkDateAlreadyExists(date2Check:string, factorId:number, userId:number){
+    return await db.iData.where('[factorId+userId+date]').equals([factorId,userId,date2Check]).count();
+  }
+
+  async checkUserHasData(userId:number){
+    return await db.iData.where('userId').equals(userId).count();
   }
 }

@@ -1,0 +1,26 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col">
+      <form>
+        <div *ngFor="let factor of factorsList" class="input-group mb-3">
+          <span class="input-group-text" id="factor.title_label">{{factor.title}}</span>
+          <input [(ngModel)]="rangeValues[factor.id!]" name="rangeValueInput_factor.id" class="ml-2" type="range"
+            min="0" max="10" />
+          <output id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="datePicker" >Date</span>
+          <input class="ml-2" (change)="onChangeDate()" type="date" [(ngModel)]="date" name="valuesDate">
+          <div *ngIf="!validDate" class="alert alert-danger" role="alert">
+            Invalid date or date already registred
+          </div>
+        </div>
+      </form>
+      <div>
+        <button (click)="onSave()" class="btn btn-primary">Save</button>
+        <button (click)="onReset()" class="btn btn-secondary">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>

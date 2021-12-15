@@ -10,10 +10,10 @@ export interface Factors {
   id?: number;
   title: string;
   userId: number;
+  color?: string;
 }
 
 export interface Data {
-  id?: number;
   factorId: number;
   userId: number;
   date: string;
@@ -30,44 +30,49 @@ export class AppDB extends Dexie {
     this.version(1).stores({
       iUsers: '++id,name',
       iFactors: '++id,title',
-      iData: '++id, factorId,userId,date',
+      iData: '[factorId+userId+date],userId',
     });
   }
 
   async initializeMockData() {
-    await db.iUsers.add({ id: 0, name: 'Default' });
-    await db.iFactors.bulkAdd([
-      { id: 0, title: 'Sex', userId: 0 },
-      { id: 1, title: 'Work / Studies', userId: 0 },
-      { id: 2, title: 'Exercise', userId: 0 },
-      { id: 3, title: 'Screentime', userId: 0 },
-    ]);
-    await db.iData.bulkAdd([
-      {factorId:0, userId: 0, date: "13/12", value: 1},
-      {factorId:0, userId: 0, date: "14/12", value: 2},
-      {factorId:0, userId: 0, date: "15/12", value: 3},
-      {factorId:0, userId: 0, date: "16/12", value: 4},
-      {factorId:0, userId: 0, date: "17/12", value: 5},
-      {factorId:0, userId: 0, date: "18/12", value: 4},
-      {factorId:1, userId: 0, date: "13/12", value: 4},
-      {factorId:1, userId: 0, date: "14/12", value: 1},
-      {factorId:1, userId: 0, date: "15/12", value: 2},
-      {factorId:1, userId: 0, date: "16/12", value: 1},
-      {factorId:1, userId: 0, date: "17/12", value: 1},
-      {factorId:1, userId: 0, date: "18/12", value: 5},
-      {factorId:2, userId: 0, date: "13/12", value: 1},
-      {factorId:2, userId: 0, date: "14/12", value: 2},
-      {factorId:2, userId: 0, date: "15/12", value: 3},
-      {factorId:2, userId: 0, date: "16/12", value: 2},
-      {factorId:2, userId: 0, date: "17/12", value: 7},
-      {factorId:2, userId: 0, date: "18/12", value: 5},
-      {factorId:3, userId: 0, date: "13/12", value: 6},
-      {factorId:3, userId: 0, date: "14/12", value: 6},
-      {factorId:3, userId: 0, date: "15/12", value: 6},
-      {factorId:3, userId: 0, date: "16/12", value: 6},
-      {factorId:3, userId: 0, date: "17/12", value: 4},
-      {factorId:3, userId: 0, date: "18/12", value: 7},
-     ]);
+    try{
+
+      await db.iUsers.add({ id: 0, name: 'Default' });
+      await db.iFactors.bulkAdd([
+        { id: 0, title: 'Sex', userId: 0 },
+        { id: 1, title: 'Work / Studies', userId: 0 },
+        { id: 2, title: 'Exercise', userId: 0 },
+        { id: 3, title: 'Screentime', userId: 0 },
+      ]);
+      await db.iData.bulkAdd([
+        {factorId:0, userId: 0, date: "2021-11-13", value: 4},
+        {factorId:0, userId: 0, date: "2021-11-14", value: 2},
+        {factorId:0, userId: 0, date: "2021-11-15", value: 3},
+        {factorId:0, userId: 0, date: "2021-11-16", value: 4},
+        {factorId:0, userId: 0, date: "2021-11-17", value: 5},
+        {factorId:0, userId: 0, date: "2021-11-18", value: 4},
+        {factorId:1, userId: 0, date: "2021-11-13", value: 4},
+        {factorId:1, userId: 0, date: "2021-11-14", value: 1},
+        {factorId:1, userId: 0, date: "2021-11-15", value: 2},
+        {factorId:1, userId: 0, date: "2021-11-16", value: 1},
+        {factorId:1, userId: 0, date: "2021-11-17", value: 1},
+        {factorId:1, userId: 0, date: "2021-11-18", value: 5},
+        {factorId:2, userId: 0, date: "2021-11-13", value: 1},
+        {factorId:2, userId: 0, date: "2021-11-14", value: 2},
+        {factorId:2, userId: 0, date: "2021-11-15", value: 3},
+        {factorId:2, userId: 0, date: "2021-11-16", value: 2},
+        {factorId:2, userId: 0, date: "2021-11-17", value: 7},
+        {factorId:2, userId: 0, date: "2021-11-18", value: 5},
+        {factorId:3, userId: 0, date: "2021-11-13", value: 6},
+        {factorId:3, userId: 0, date: "2021-11-14", value: 6},
+        {factorId:3, userId: 0, date: "2021-11-15", value: 6},
+        {factorId:3, userId: 0, date: "2021-11-16", value: 6},
+        {factorId:3, userId: 0, date: "2021-11-17", value: 4},
+        {factorId:3, userId: 0, date: "2021-11-18", value: 7},
+      ]);
+    }catch(error){
+      console.warn(error);
+    }
   }
 }
 

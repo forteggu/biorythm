@@ -1,0 +1,10 @@
+.input-group{
+    width: 100%;
+}
+.input-group-text{
+    width: 10rem;
+    text-align: left;
+}
+input[type=range]{
+    
+}
