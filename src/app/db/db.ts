@@ -29,7 +29,7 @@ export class AppDB extends Dexie {
     super('BiorChartData');
     this.version(1).stores({
       iUsers: '++id,name',
-      iFactors: '++id,title',
+      iFactors: '++id,[userId+title]',
       iData: '[factorId+userId+date],userId',
     });
   }

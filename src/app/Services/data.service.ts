@@ -25,12 +25,21 @@ export class DataService {
   async addFactor(reg:Factors){
     return await db.iFactors.add(reg);
   }
+  
+  async removeFactor(regId:number){
+    return await db.iFactors.delete(regId);
+  }
+
   async addDayData(data:Data[]){
     await db.iData.bulkAdd(data);
   }
 
   async checkDateAlreadyExists(date2Check:string, factorId:number, userId:number){
     return await db.iData.where('[factorId+userId+date]').equals([factorId,userId,date2Check]).count();
+  }
+
+  async checkFactorAlreadyExists(factorTitle:string, userId:number){
+    return await db.iFactors.where('[userId+title]').equals([userId,factorTitle]).count();
   }
 
   async checkUserHasData(userId:number){

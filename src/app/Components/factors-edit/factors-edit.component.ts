@@ -13,6 +13,8 @@ export class FactorsEditComponent implements OnInit {
   factorsList: Factors[] = [];
   factorsListEditionMap: { id: number; inEdition: boolean }[] = [];
   newFactorTitle: string = '';
+  newFactorAlreadyInUse:boolean=false;
+  factorOnDelete:Factors = {} as Factors;
   constructor(private _dataService: DataService) {}
 
   ngOnInit(): void {
@@ -22,7 +24,7 @@ export class FactorsEditComponent implements OnInit {
     try {
       this._dataService.getFactors().then((factors) => {
         this.factorsList = [];
-        this.factorsListEditionMap=[];
+        this.factorsListEditionMap = [];
         if (factors && factors.length > 0) {
           this.factorsList = factors;
           for (let i of factors) {
@@ -46,8 +48,40 @@ export class FactorsEditComponent implements OnInit {
       this.factorsListEditionMap[targetId].inEdition = false;
     }
   }
-  onClickRemove(element: HTMLElement) {}
+  onClickRemove(element: HTMLElement) {
+    let targetId = this.getElementTargetId(element);
+    if (targetId !== NaN) {
+      // Show pop up
+      let trigger: HTMLElement = document.getElementById(
+        'confirmationModalTrigger'
+      ) as HTMLElement;
+      let factorInput: HTMLInputElement = document.getElementById(
+        'inputFactor_'+targetId
+      ) as HTMLInputElement;
+      console.log("factorInput", factorInput);
+      this.factorOnDelete.id=targetId;
+      this.factorOnDelete.title=factorInput.value;
 
+      console.log("factorOnDelete ",this.factorOnDelete);
+      trigger.click();
+    }
+  }
+  onAcceptRemove(){
+    try {
+      let trigger: HTMLElement = document.getElementById(
+        'cancelConfirmationModalButton'
+      ) as HTMLElement;
+        trigger.click();
+      this._dataService.removeFactor(this.factorOnDelete.id!).then((r) => {
+        this.loadData();
+      });
+    } catch (e) {
+      openModal({ t: 'Exception', b: e as string });
+    }
+  }
+  onUpdateNewFactor(){
+    this.newFactorAlreadyInUse=false;
+  }
   onClickCancel(element: HTMLElement) {
     let targetId = this.getElementTargetId(element);
     if (targetId !== NaN) {
@@ -60,10 +94,23 @@ export class FactorsEditComponent implements OnInit {
   }
   onAddNewFactor() {
     try {
-      this._dataService.addFactor({
-        title: this.newFactorTitle,
-        userId: getUserId(),
-      }).then(r => this.loadData());
+      this._dataService
+        .checkFactorAlreadyExists(this.newFactorTitle, getUserId())
+        .then((c) => {
+          if (c > 0) {
+            this.newFactorAlreadyInUse=true;
+          } else {
+            this._dataService
+              .addFactor({
+                title: this.newFactorTitle,
+                userId: getUserId(),
+              })
+              .then((r) => {
+                this.loadData();
+                this.newFactorTitle = '';
+              });
+          }
+        });
     } catch (e) {
       openModal({ t: 'Exception', b: e as string });
     }

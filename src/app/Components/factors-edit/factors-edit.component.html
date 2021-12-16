@@ -9,13 +9,24 @@
                     <div *ngFor="let f of factorsList">
                         <div class="form-group">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" [disabled]="!factorsListEditionMap[f.id!].inEdition" placeholder="New Factor" aria-label="Factor's name"
-                                    aria-describedby="addFactorButton" value="{{f.title}}">
-                                    <input type="color" class="form-control form-control-color" *ngIf="factorsListEditionMap[f.id!].inEdition" id="factorColor_{{f.id!}}" value="{{f.color!}}">
-                                <button class="btn btn-outline-secondary" #save type="button" *ngIf="factorsListEditionMap[f.id!].inEdition" (click)="onClickSave(save)" id="save_{{f.id!}}">Save</button>
-                                <button class="btn btn-outline-secondary" #edit type="button" *ngIf="!factorsListEditionMap[f.id!].inEdition" (click)="onClickEdit(edit)" id="edit_{{f.id!}}">Edit</button>
-                                <button class="btn btn-outline-secondary" #cancel type="button" *ngIf="factorsListEditionMap[f.id!].inEdition" (click)="onClickCancel(cancel)" id="cancel_{{f.id!}}">Cancel</button>
-                                <button class="btn btn-outline-secondary" #remove type="button" *ngIf="!factorsListEditionMap[f.id!].inEdition" id="remove_{{f.id}}" (click)="onClickRemove(remove)" >Remove</button>
+                                <input type="text" class="form-control"
+                                    [disabled]="!factorsListEditionMap[f.id!].inEdition" placeholder="Factor..."
+                                    aria-label="Factor's name" id="inputFactor_{{f.id}}" aria-describedby="addFactorButton" value="{{f.title}}">
+                                <input type="color" class="form-control form-control-color"
+                                    *ngIf="factorsListEditionMap[f.id!].inEdition" id="factorColor_{{f.id!}}"
+                                    value="{{f.color!}}">
+                                <button class="btn btn-outline-secondary" #save type="button"
+                                    *ngIf="factorsListEditionMap[f.id!].inEdition" (click)="onClickSave(save)"
+                                    id="save_{{f.id!}}">Save</button>
+                                <button class="btn btn-outline-secondary" #edit type="button"
+                                    *ngIf="!factorsListEditionMap[f.id!].inEdition" (click)="onClickEdit(edit)"
+                                    id="edit_{{f.id!}}">Edit</button>
+                                <button class="btn btn-outline-secondary" #cancel type="button"
+                                    *ngIf="factorsListEditionMap[f.id!].inEdition" (click)="onClickCancel(cancel)"
+                                    id="cancel_{{f.id!}}">Cancel</button>
+                                <button class="btn btn-outline-secondary" #remove type="button"
+                                    *ngIf="!factorsListEditionMap[f.id!].inEdition" id="remove_{{f.id}}"
+                                    (click)="onClickRemove(remove)">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -29,9 +40,14 @@
                 <form action="" id="addFactorForm">
                     <div class="form-group">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="New Factor" aria-label="Factor's name"
-                                aria-describedby="addFactorButton" name="newFactorInput" id="newFactorInput" [(ngModel)]="newFactorTitle">
-                            <button class="btn btn-outline-secondary" type="button" (click)="onAddNewFactor()" id="addFactorButton">+</button>
+                            <input type="text" (input)="onUpdateNewFactor()" class="form-control" placeholder="New Factor" aria-label="Factor's name"
+                                aria-describedby="addFactorButton" name="newFactorInput" id="newFactorInput"
+                                [(ngModel)]="newFactorTitle">
+                            <button class="btn btn-outline-secondary" type="button" (click)="onAddNewFactor()"
+                                id="addFactorButton">+</button>
+                        </div>
+                        <div *ngIf="newFactorAlreadyInUse" id="newFactorAlreadyInUse" class="alert alert-danger" role="alert">
+                            This factor already exists
                         </div>
                     </div>
                 </form>
@@ -39,3 +55,28 @@
         </div>
     </div>
 </div>
+
+<!-- Button trigger modal -->
+<button type="button" style="display: none;" class="btn btn-primary" data-toggle="modal" id="confirmationModalTrigger" data-target="#confirmationModal">
+    Confirmation Modal Trigger
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalTitle"></h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="confirmationModal-body" class="modal-body">
+            Upon confirmation, all previous values will be deleted, do you wish to delete factor <span>{{factorOnDelete.title}}</span>?
+        </div>
+        <div class="modal-footer">
+          <button id="cancelConfirmationModalButton" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button (click)="onAcceptRemove()" type="button" class="btn btn-primary">Accept</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
