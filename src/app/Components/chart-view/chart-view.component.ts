@@ -37,18 +37,12 @@ export class ChartViewComponent implements OnInit {
    * @param labels labels to display (dates)
    */
   preprocesssData(labels: string[], data: dataStructure) {
-    console.log(labels);
     labels.map((l) => {
       data.factors.map((f) => {
         let factorHasDate = false;
         let i=0;
         while(data.data[i] && !factorHasDate){
-          /*console.log("----------------");
-          console.log("formatted data data date: ", this.formatDate(data.data[i].date));
-          console.log("l: ",l);
-          console.log("****************");*/
-          console.log(`Map element (f, d, v): ${data.data[i].factorId} + ${data.data[i].date} + ${data.data[i].value}`)
-          if (f.id===data.data[i].factorId && data.data[i].date === l) {
+         if (f.id===data.data[i].factorId && data.data[i].date === l) {
             factorHasDate = true;
           }
           i++;
@@ -90,7 +84,6 @@ export class ChartViewComponent implements OnInit {
       let date2 = new Date(b.date);
       return date1 < date2 ? -1 : 1;
     });
-    console.log(da.data); 
     // Create dataset structure
     let datasets = da.factors.map((e) => {
       return {

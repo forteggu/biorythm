@@ -177,17 +177,27 @@ export class FactorsEditComponent implements OnInit {
       if (this.factorsList[i].id === uf.id) {
         this.factorsList[i].color = uf.color;
         this.factorsList[i].title = uf.title;
-        notFound=false;
-      }else{
+        notFound = false;
+      } else {
         i++;
       }
     }
   }
-  getStyle(factor: Factors) {
-    return {
-      color: factor.color,
-      'font-weight': 'bold',
-      border: `1px solid ${factor.color}`
-    };
+
+  getStyle(factor: Factors, isButton?: boolean) {
+    if (isButton) {
+      return {
+        color: factor.color,
+        'font-weight': 'bold',
+        border: `1px solid ${factor.color}`,
+        background:`${factor.color}11`
+      };
+    } else {
+      return {
+        color: factor.color,
+        'font-weight': 'bold',
+        border: `1px solid ${factor.color}`,
+      };
+    }
   }
 }

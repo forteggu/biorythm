@@ -17,3 +17,7 @@ input[type=color]{
     flex:1;
     height: auto;
 }
+
+.btn-outline-custom:hover{
+    transform: scale(1.25);
+}
