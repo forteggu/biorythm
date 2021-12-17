@@ -57,4 +57,12 @@ export class DataService {
   async updateFactor(factor:Factors){
     return await db.iFactors.update(factor.id!,factor);
   }
+
+  async getAlreadyRegisteredFactors(date:string){
+    return await db.iData.where({userId:getUserId(),date:date}).toArray();
+  }
+
+  async saveUpdateRegisters(data:Data[]){
+    return await db.iData.bulkPut(data);
+  }
 }

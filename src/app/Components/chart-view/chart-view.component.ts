@@ -116,6 +116,6 @@ export class ChartViewComponent implements OnInit {
 
   formatDate(date: string) {
     let dateArray = date.split('-');
-    return dateArray[1] + '/' + dateArray[2] + '/' + dateArray[0];
+    return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
   }
 }

@@ -4,26 +4,78 @@
     <div class="col" *ngIf="!noFactors">
       <form>
         <div *ngFor="let factor of factorsList" class="input-group mb-3">
-          <span class="input-group-text"[style]="getStyle(factor)" id="factor.title_label">{{factor.title}}</span>
-          <input [style]="{color:factor.color}" [(ngModel)]="rangeValues[factor.id!]" id="rangeValueInput_{{factor.id}}" name="rangeValueInput_{{factor.id}}" class="ml-2" type="range"
-          min="0" max="10" />
+          <span class="input-group-text" [style]="getStyle(factor)" id="factor.title_label">{{factor.title}}</span>
+          <input [style]="{color:factor.color}" [(ngModel)]="rangeValues[factor.id!]" id="rangeValueInput_{{factor.id}}"
+            name="rangeValueInput_{{factor.id}}" class="ml-2" type="range" min="0" max="10" />
           <output [style]="{color:factor.color}" id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
         </div>
         <div class="input-group mb-3">
-          <span class="input-group-text" id="datePicker" >Date</span>
+          <span class="input-group-text" id="datePicker">Date</span>
           <input class="ml-2" (change)="onChangeDate()" type="date" [(ngModel)]="date" name="valuesDate">
-          <div *ngIf="!validDate" class="alert alert-danger" role="alert">
-            Invalid date or date already registred
-          </div>
+        </div>
+        <div *ngIf="!validDate" class="alert alert-warning" role="alert">
+          There are existing values for that date already, upon accepting those values will be updated
         </div>
       </form>
       <div>
-        <button (click)="onSave()" class="btn btn-primary">Save</button>
+        <button (click)="onClickSave()" [disabled]="!validForm" class="btn btn-primary">Save</button>
         <button (click)="onReset()" class="btn btn-secondary">Reset</button>
       </div>
     </div>
     <div *ngIf="noFactors" class="alert alert-primary" role="alert">
-      There are no factors to value yet, please create some first. 
+      There are no factors to value yet, please create some first.
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" style="display: none;" class="btn btn-primary" data-toggle="modal"
+  id="confirmationModalTrigger_addValues" data-target="#confirmationModal_addValues">
+  Confirmation Modal Trigger
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal_addValues" tabindex="-1"
+  aria-labelledby="confirmationModalTitle_addValues" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalTitle_addValues"></h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id="confirmationModal-body_addValues" class="modal-body">
+        Upon confirmation, all previous values will be updated, are you sure you want to update the following values?
+        <hr>
+        <div class="confirmUpdateGrid_head text-center">
+          <div class="row">
+            <div class="col">
+              Factor
+            </div>
+            <div class="col">
+              Current Value
+            </div>
+            <div class="col">
+              Old Value
+            </div>
+          </div>
+          <div class="row confirmUpdateGrid_body text-center" *ngFor="let af of alreadyUsedFactors">
+            <div class="col">
+              {{af.desc}}
+            </div>
+            <div class="col">
+              {{af.val}}
+            </div>
+            <div class="col">
+              {{rangeValues[af.id]}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelConfirmationModalButton_addValues" type="button" class="btn btn-secondary"
+          data-dismiss="modal">Cancel</button>
+        <button (click)="onSaveUpdate()" type="button" class="btn btn-primary">Accept</button>
+      </div>
     </div>
   </div>
 </div>
