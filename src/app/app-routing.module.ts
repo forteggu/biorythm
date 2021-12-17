@@ -9,7 +9,7 @@ import { MainComponent } from './Components/main/main.component';
 const routes: Routes = [
   {path:'main', component:MainComponent, children:[
     {
-      path:"",
+      path:"chartView",
       component:ChartViewComponent
     },
     {
