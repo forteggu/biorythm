@@ -1,7 +1,19 @@
-#newFactorAlreadyInUse{
+#newFactorInvalid{
     margin-top: -1em;
 }
 
 #confirmationModal-body > span{
     font-weight: bold;
+}
+
+.innerMargin-025>*{
+    margin: 0.25em;
+}
+
+input[type=text]{
+    flex: 9;
+}
+input[type=color]{
+    flex:1;
+    height: auto;
 }

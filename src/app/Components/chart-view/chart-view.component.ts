@@ -18,10 +18,10 @@ export class ChartViewComponent implements OnInit {
   constructor(private _dataService: DataService) {}
   ngOnInit(): void {
     try {
-      // if no data no show
+      // if there is no data chart is not displayed
       this._dataService.checkUserHasData(getUserId()).then((h) => {
         if (h > 0) {
-          this._dataService.getDefaults().then((data) => this.loadChart(data));
+          this._dataService.getData().then((data) => this.loadChart(data));
         } else {
           this.showAlert = true;
           this.showChart = false;
@@ -33,35 +33,16 @@ export class ChartViewComponent implements OnInit {
   }
 
   parseData(da: defaultData) {
-    // Random color list
-    let colorList = [
-      'rgb(75, 192, 192)',
-      'rgb(255,99,71)',
-      'rgb(128,0,0)',
-      'rgb(255,140,0)',
-      'rgb(255,215,0)',
-      'rgb(210,105,30)',
-      'rgb(105,105,105)',
-      'rgb(148,0,211)',
-      'rgb(138,43,226)',
-      'rgb(100,149,237)',
-      'rgb(70,130,180)',
-      'rgb(0,255,255)',
-      'rgb(127,255,0)',
-      'rgb(154,205,50)',
-      'rgb(255,165,0)',
-    ];
     // Labels are the dates, no repeated values
     let labels = [...new Set(da.data.map((l) => this.formatDate(l.date)))];
-    // Reorder factors just in case
-    da.factors.sort((a, b) => {
-      return a.id! - b.id!;
+    // Reorder dates just in case
+    da.data.sort((a, b) => {
+      let date1 = new Date(a.date);
+      let date2 = new Date(b.date);
+      return date1 < date2 ? -1 : 1;
     });
     // Create dataset structure
     let datasets = da.factors.map((e) => {
-      const randomNumber = Math.floor(Math.random() * colorList.length);
-      let iterationColor = colorList[randomNumber];
-      colorList.splice(randomNumber, 1);
       return {
         label: e.title,
         data: da.data
@@ -70,7 +51,7 @@ export class ChartViewComponent implements OnInit {
           })
           .map((z) => z.value),
         fill: false,
-        borderColor: iterationColor,
+        borderColor: e.color,
         tension: 0.1,
       };
     });
@@ -101,7 +82,6 @@ export class ChartViewComponent implements OnInit {
 
   formatDate(date: string) {
     let dateArray = date.split('-');
-    dateArray.shift();
-    return dateArray[1] + '/' + dateArray[0];
+    return dateArray[1] + '/' + dateArray[2]+'/'+dateArray[0];
   }
 }

@@ -1,13 +1,13 @@
 <div class="container">
 
   <div class="row">
-    <div class="col">
+    <div class="col" *ngIf="!noFactors">
       <form>
         <div *ngFor="let factor of factorsList" class="input-group mb-3">
-          <span class="input-group-text" id="factor.title_label">{{factor.title}}</span>
-          <input [(ngModel)]="rangeValues[factor.id!]" name="rangeValueInput_factor.id" class="ml-2" type="range"
-            min="0" max="10" />
-          <output id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
+          <span class="input-group-text"[style]="getStyle(factor)" id="factor.title_label">{{factor.title}}</span>
+          <input [style]="{color:factor.color}" [(ngModel)]="rangeValues[factor.id!]" id="rangeValueInput_{{factor.id}}" name="rangeValueInput_{{factor.id}}" class="ml-2" type="range"
+          min="0" max="10" />
+          <output [style]="{color:factor.color}" id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text" id="datePicker" >Date</span>
@@ -21,6 +21,9 @@
         <button (click)="onSave()" class="btn btn-primary">Save</button>
         <button (click)="onReset()" class="btn btn-secondary">Reset</button>
       </div>
+    </div>
+    <div *ngIf="noFactors" class="alert alert-primary" role="alert">
+      There are no factors to value yet, please create some first. 
     </div>
   </div>
 </div>

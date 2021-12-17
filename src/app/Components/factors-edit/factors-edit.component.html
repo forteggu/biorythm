@@ -3,17 +3,17 @@
         <div *ngIf="factorsList.length===0" class="alert alert-primary" role="alert">
             There are no factors yet. Please add them using the input down below.
         </div>
-        <div *ngIf="factorsList.length!==0" class="row">
+        <div *ngIf="factorsList.length!==0">
             <div class="col">
                 <form action="" id="addFactorForm">
                     <div *ngFor="let f of factorsList">
                         <div class="form-group">
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 innerMargin-025">
                                 <input type="text" class="form-control"
                                     [disabled]="!factorsListEditionMap[f.id!].inEdition" placeholder="Factor..."
                                     aria-label="Factor's name" id="inputFactor_{{f.id}}" aria-describedby="addFactorButton" value="{{f.title}}">
                                 <input type="color" class="form-control form-control-color"
-                                    *ngIf="factorsListEditionMap[f.id!].inEdition" id="factorColor_{{f.id!}}"
+                                     [disabled]="!factorsListEditionMap[f.id!].inEdition" id="factorColor_{{f.id!}}"
                                     value="{{f.color!}}">
                                 <button class="btn btn-outline-secondary" #save type="button"
                                     *ngIf="factorsListEditionMap[f.id!].inEdition" (click)="onClickSave(save)"
@@ -39,15 +39,16 @@
             <div>
                 <form action="" id="addFactorForm">
                     <div class="form-group">
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 innerMargin-025 ">
                             <input type="text" (input)="onUpdateNewFactor()" class="form-control" placeholder="New Factor" aria-label="Factor's name"
                                 aria-describedby="addFactorButton" name="newFactorInput" id="newFactorInput"
-                                [(ngModel)]="newFactorTitle">
+                                [(ngModel)]="newFactorObject.t">
+                                <input type="color" class="form-control form-control-color" id="newFactorColor" [(ngModel)]="newFactorObject.c" name="newFactorColor">
                             <button class="btn btn-outline-secondary" type="button" (click)="onAddNewFactor()"
                                 id="addFactorButton">+</button>
                         </div>
-                        <div *ngIf="newFactorAlreadyInUse" id="newFactorAlreadyInUse" class="alert alert-danger" role="alert">
-                            This factor already exists
+                        <div *ngIf="newFactorInvalid" id="newFactorInvalid" class="alert alert-danger" role="alert">
+                            This factor is empty or already exists
                         </div>
                     </div>
                 </form>

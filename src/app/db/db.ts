@@ -30,7 +30,7 @@ export class AppDB extends Dexie {
     this.version(1).stores({
       iUsers: '++id,name',
       iFactors: '++id,[userId+title]',
-      iData: '[factorId+userId+date],userId',
+      iData: '[factorId+userId+date],[userId+factorId],[userId+date],userId',
     });
   }
 

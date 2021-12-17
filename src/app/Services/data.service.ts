@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { db, Users, Factors, Data } from '../db/db';
 import { liveQuery } from 'dexie';
+import { getUserId } from '../Commons/commons';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,14 +12,17 @@ export class DataService {
   async getDefaults() {
     let d = await db.iData.toArray();
     if(d.length===0){
-      console.log("No hay registros, cargamos valores por defecto");
       await db.initializeMockData();
       d = await db.iData.toArray();
     }
     let f = await this.getFactors();
     return {data:d,factors:f};
   }
-  
+  async getData() {
+    let d = await db.iData.toArray();
+    let f = await this.getFactors();
+    return {data:d,factors:f};
+  }
   async getFactors(){
     return await db.iFactors.toArray();
   }
@@ -34,8 +38,8 @@ export class DataService {
     await db.iData.bulkAdd(data);
   }
 
-  async checkDateAlreadyExists(date2Check:string, factorId:number, userId:number){
-    return await db.iData.where('[factorId+userId+date]').equals([factorId,userId,date2Check]).count();
+  async checkDateAlreadyExists(date2Check:string, userId:number){
+    return await db.iData.where('[userId+date]').equals([userId,date2Check]).count();
   }
 
   async checkFactorAlreadyExists(factorTitle:string, userId:number){
@@ -44,5 +48,13 @@ export class DataService {
 
   async checkUserHasData(userId:number){
     return await db.iData.where('userId').equals(userId).count();
+  }
+
+  async removeFactorsData(factorId:number){
+    return await db.iData.where({userId:getUserId(),factorId:factorId}).delete();
+  }
+
+  async updateFactor(factor:Factors){
+    return await db.iFactors.update(factor.id!,factor);
   }
 }

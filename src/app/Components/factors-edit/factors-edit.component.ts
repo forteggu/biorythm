@@ -12,9 +12,12 @@ import { DataService } from 'src/app/Services/data.service';
 export class FactorsEditComponent implements OnInit {
   factorsList: Factors[] = [];
   factorsListEditionMap: { id: number; inEdition: boolean }[] = [];
-  newFactorTitle: string = '';
-  newFactorAlreadyInUse:boolean=false;
-  factorOnDelete:Factors = {} as Factors;
+  newFactorObject: { t: string; c: string } = {
+    t: '',
+    c: this.randomColor(),
+  };
+  newFactorInvalid: boolean = false;
+  factorOnDelete: Factors = {} as Factors;
   constructor(private _dataService: DataService) {}
 
   ngOnInit(): void {
@@ -46,6 +49,23 @@ export class FactorsEditComponent implements OnInit {
     let targetId = this.getElementTargetId(element);
     if (targetId !== NaN) {
       this.factorsListEditionMap[targetId].inEdition = false;
+      let factorInput: HTMLInputElement = document.getElementById(
+        'inputFactor_' + targetId
+      ) as HTMLInputElement;
+      let factorColorInput: HTMLInputElement = document.getElementById(
+        'factorColor_' + targetId
+      ) as HTMLInputElement;
+      let updatedFactor:Factors={
+        id:targetId,
+        title:factorInput.value,
+        color:factorColorInput.value,
+        userId:getUserId()
+      };
+      try{
+        this._dataService.updateFactor(updatedFactor);
+      }catch(e){
+        openModal({t:"Exception",b:e as string});
+      }
     }
   }
   onClickRemove(element: HTMLElement) {
@@ -56,36 +76,48 @@ export class FactorsEditComponent implements OnInit {
         'confirmationModalTrigger'
       ) as HTMLElement;
       let factorInput: HTMLInputElement = document.getElementById(
-        'inputFactor_'+targetId
+        'inputFactor_' + targetId
       ) as HTMLInputElement;
-      console.log("factorInput", factorInput);
-      this.factorOnDelete.id=targetId;
-      this.factorOnDelete.title=factorInput.value;
-
-      console.log("factorOnDelete ",this.factorOnDelete);
+      this.factorOnDelete.id = targetId;
+      this.factorOnDelete.title = factorInput.value;
       trigger.click();
     }
   }
-  onAcceptRemove(){
+  onAcceptRemove() {
     try {
       let trigger: HTMLElement = document.getElementById(
         'cancelConfirmationModalButton'
       ) as HTMLElement;
-        trigger.click();
+      trigger.click();
       this._dataService.removeFactor(this.factorOnDelete.id!).then((r) => {
-        this.loadData();
+        this._dataService.removeFactorsData(this.factorOnDelete.id!).then(rd=>{
+          this.loadData();
+        });
       });
     } catch (e) {
       openModal({ t: 'Exception', b: e as string });
     }
   }
-  onUpdateNewFactor(){
-    this.newFactorAlreadyInUse=false;
+  onUpdateNewFactor() {
+    this.newFactorInvalid = false;
   }
   onClickCancel(element: HTMLElement) {
     let targetId = this.getElementTargetId(element);
     if (targetId !== NaN) {
       this.factorsListEditionMap[targetId].inEdition = false;
+      let factorInput: HTMLInputElement = document.getElementById(
+        'inputFactor_' + targetId
+      ) as HTMLInputElement;
+      let originalFactorObj = this.factorsList.filter(
+        (f) => f.id === targetId
+      )[0];
+      factorInput.value = originalFactorObj.title;
+      let factorColorInput: HTMLInputElement = document.getElementById(
+        'factorColor_' + targetId
+      ) as HTMLInputElement;
+      factorColorInput.value =
+        originalFactorObj.color ||
+        this.randomColor();
     }
   }
   getElementTargetId(element: HTMLElement) {
@@ -93,26 +125,42 @@ export class FactorsEditComponent implements OnInit {
     return parseInt(id.split('_')[1]);
   }
   onAddNewFactor() {
-    try {
-      this._dataService
-        .checkFactorAlreadyExists(this.newFactorTitle, getUserId())
-        .then((c) => {
-          if (c > 0) {
-            this.newFactorAlreadyInUse=true;
-          } else {
-            this._dataService
-              .addFactor({
-                title: this.newFactorTitle,
-                userId: getUserId(),
-              })
-              .then((r) => {
-                this.loadData();
-                this.newFactorTitle = '';
-              });
-          }
-        });
-    } catch (e) {
-      openModal({ t: 'Exception', b: e as string });
+    if (this.newFactorObject.t.trim().length === 0) {
+      this.newFactorInvalid=true;
+    } else {
+      try {
+        this._dataService
+          .checkFactorAlreadyExists(this.newFactorObject.t, getUserId())
+          .then((c) => {
+            if (c > 0) {
+              this.newFactorInvalid = true;
+            } else {
+              this._dataService
+                .addFactor({
+                  title: this.newFactorObject.t,
+                  color: this.newFactorObject.c,
+                  userId: getUserId(),
+                })
+                .then((r) => {
+                  this.loadData();
+                  this.newFactorObject.t = '';
+                  this.newFactorObject.c = this.randomColor();
+                });
+            }
+          });
+      } catch (e) {
+        openModal({ t: 'Exception', b: e as string });
+      }
     }
   }
+  
+  randomColor () {
+    let color = '#';
+    for (let i = 0; i < 6; i++){
+       const random = Math.random();
+       const bit = (random * 16) | 0;
+       color += (bit).toString(16);
+    };
+    return color;
+ };
 }
