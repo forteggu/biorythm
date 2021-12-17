@@ -67,7 +67,7 @@ export class AddValuesComponent implements OnInit {
       });
       try {
         this._dataService.addDayData(regList);
-        this._router.navigateByUrl('main');
+        this._router.navigateByUrl('main/chartView');
       } catch (e: any) {
         // Modal: something went wrong
         openModal({ t: 'Exception', b: e as string });
@@ -93,7 +93,7 @@ export class AddValuesComponent implements OnInit {
           'cancelConfirmationModalButton_addValues'
         ) as HTMLElement;
         b.click();
-        this._router.navigateByUrl('main');
+        this._router.navigateByUrl('main/chartView');
       });
     } catch (e: any) {
       // Modal: something went wrong

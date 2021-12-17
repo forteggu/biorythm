@@ -37,16 +37,23 @@ export class ChartViewComponent implements OnInit {
    * @param labels labels to display (dates)
    */
   preprocesssData(labels: string[], data: dataStructure) {
+    console.log(labels);
     labels.map((l) => {
       data.factors.map((f) => {
         let factorHasDate = false;
         let i=0;
         while(data.data[i] && !factorHasDate){
-          if (f.id===data.data[i].factorId && this.formatDate(data.data[i].date) === l) {
+          /*console.log("----------------");
+          console.log("formatted data data date: ", this.formatDate(data.data[i].date));
+          console.log("l: ",l);
+          console.log("****************");*/
+          console.log(`Map element (f, d, v): ${data.data[i].factorId} + ${data.data[i].date} + ${data.data[i].value}`)
+          if (f.id===data.data[i].factorId && data.data[i].date === l) {
             factorHasDate = true;
           }
           i++;
         }
+        
         if(!factorHasDate){
           let newReg:Data={} as Data;
           newReg.date=l;
@@ -68,8 +75,8 @@ export class ChartViewComponent implements OnInit {
       let date2 = new Date(b);
       return date1 < date2 ? -1 : 1;
     });
-    labels = labels.map(l => this.formatDate(l));
     this.preprocesssData(labels, da);
+    labels = labels.map(l => this.formatDate(l));
     const avgValuesDataSet={
       label:"Average",
       data:this.calcAvg(labels,da.data),
@@ -83,7 +90,7 @@ export class ChartViewComponent implements OnInit {
       let date2 = new Date(b.date);
       return date1 < date2 ? -1 : 1;
     });
-
+    console.log(da.data); 
     // Create dataset structure
     let datasets = da.factors.map((e) => {
       return {

@@ -14,6 +14,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit(e:Event):void {
     e.preventDefault();
-    this._router.navigateByUrl("main");
+    this._router.navigateByUrl("main/chartView");
   }
 }
