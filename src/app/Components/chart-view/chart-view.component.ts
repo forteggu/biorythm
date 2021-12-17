@@ -70,6 +70,13 @@ export class ChartViewComponent implements OnInit {
     });
     labels = labels.map(l => this.formatDate(l));
     this.preprocesssData(labels, da);
+    const avgValuesDataSet={
+      label:"Average",
+      data:this.calcAvg(labels,da.data),
+      fill:true,
+      borderColor:"rgba(255,0,0,0.8)",
+      tension:0
+    };
     // Reorder dates just in case
     da.data.sort((a, b) => {
       let date1 = new Date(a.date);
@@ -91,13 +98,13 @@ export class ChartViewComponent implements OnInit {
         tension: 0.1,
       };
     });
+    datasets.push(avgValuesDataSet);
     return {
       labels: labels,
       datasets: datasets,
     };
   }
   loadChart(chartData: dataStructure) {
-    console.log(chartData);
     const parsedData = this.parseData(chartData);
     const ctx = document.getElementById('myChart')! as HTMLCanvasElement;
 
@@ -120,5 +127,21 @@ export class ChartViewComponent implements OnInit {
   formatDate(date: string) {
     let dateArray = date.split('-');
     return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
+  }
+
+  calcAvg(labels:string[] ,data:Data[]){
+    let avgValuesPerDay:number[]=[];
+    labels.map(l=>{
+      let sumDia=0;
+      let fCount=0;
+      for(let d of data){
+        if(this.formatDate(d.date)===l){
+          sumDia+=d.value;
+          fCount++;
+        }
+      }
+      avgValuesPerDay.push(sumDia/fCount);
+    });
+   return avgValuesPerDay;
   }
 }
