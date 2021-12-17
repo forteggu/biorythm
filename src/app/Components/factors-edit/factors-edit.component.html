@@ -8,23 +8,23 @@
                 <form action="" id="addFactorForm">
                     <div *ngFor="let f of factorsList">
                         <div class="form-group">
-                            <div class="input-group mb-3 innerMargin-025">
-                                <input type="text" class="form-control"
+                            <div class="input-group mb-3 innerMargin-025" >
+                                <input [ngStyle]="getStyle(f)" type="text" class="form-control"
                                     [disabled]="!factorsListEditionMap[f.id!].inEdition" placeholder="Factor..."
                                     aria-label="Factor's name" id="inputFactor_{{f.id}}" aria-describedby="addFactorButton" value="{{f.title}}">
-                                <input type="color" class="form-control form-control-color"
+                                <input [ngStyle]="getStyle(f)" type="color" class="form-control form-control-color"
                                      [disabled]="!factorsListEditionMap[f.id!].inEdition" id="factorColor_{{f.id!}}"
                                     value="{{f.color!}}">
-                                <button class="btn btn-outline-secondary" #save type="button"
+                                <button [ngStyle]="getStyle(f)" class="btn btn-outline-secondary" #save type="button"
                                     *ngIf="factorsListEditionMap[f.id!].inEdition" (click)="onClickSave(save)"
                                     id="save_{{f.id!}}">Save</button>
-                                <button class="btn btn-outline-secondary" #edit type="button"
+                                <button [ngStyle]="getStyle(f)" class="btn btn-outline-secondary" #edit type="button"
                                     *ngIf="!factorsListEditionMap[f.id!].inEdition" (click)="onClickEdit(edit)"
                                     id="edit_{{f.id!}}">Edit</button>
-                                <button class="btn btn-outline-secondary" #cancel type="button"
+                                <button [ngStyle]="getStyle(f)" class="btn btn-outline-secondary" #cancel type="button"
                                     *ngIf="factorsListEditionMap[f.id!].inEdition" (click)="onClickCancel(cancel)"
                                     id="cancel_{{f.id!}}">Cancel</button>
-                                <button class="btn btn-outline-secondary" #remove type="button"
+                                <button [ngStyle]="getStyle(f)" class="btn btn-outline-secondary" #remove type="button"
                                     *ngIf="!factorsListEditionMap[f.id!].inEdition" id="remove_{{f.id}}"
                                     (click)="onClickRemove(remove)">Remove</button>
                             </div>

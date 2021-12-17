@@ -55,16 +55,18 @@ export class FactorsEditComponent implements OnInit {
       let factorColorInput: HTMLInputElement = document.getElementById(
         'factorColor_' + targetId
       ) as HTMLInputElement;
-      let updatedFactor:Factors={
-        id:targetId,
-        title:factorInput.value,
-        color:factorColorInput.value,
-        userId:getUserId()
+      let updatedFactor: Factors = {
+        id: targetId,
+        title: factorInput.value,
+        color: factorColorInput.value,
+        userId: getUserId(),
       };
-      try{
-        this._dataService.updateFactor(updatedFactor);
-      }catch(e){
-        openModal({t:"Exception",b:e as string});
+      try {
+        this._dataService.updateFactor(updatedFactor).then(() => {
+          this.updateFactorStyle(updatedFactor);
+        });
+      } catch (e) {
+        openModal({ t: 'Exception', b: e as string });
       }
     }
   }
@@ -90,9 +92,11 @@ export class FactorsEditComponent implements OnInit {
       ) as HTMLElement;
       trigger.click();
       this._dataService.removeFactor(this.factorOnDelete.id!).then((r) => {
-        this._dataService.removeFactorsData(this.factorOnDelete.id!).then(rd=>{
-          this.loadData();
-        });
+        this._dataService
+          .removeFactorsData(this.factorOnDelete.id!)
+          .then((rd) => {
+            this.loadData();
+          });
       });
     } catch (e) {
       openModal({ t: 'Exception', b: e as string });
@@ -115,9 +119,7 @@ export class FactorsEditComponent implements OnInit {
       let factorColorInput: HTMLInputElement = document.getElementById(
         'factorColor_' + targetId
       ) as HTMLInputElement;
-      factorColorInput.value =
-        originalFactorObj.color ||
-        this.randomColor();
+      factorColorInput.value = originalFactorObj.color || this.randomColor();
     }
   }
   getElementTargetId(element: HTMLElement) {
@@ -126,7 +128,7 @@ export class FactorsEditComponent implements OnInit {
   }
   onAddNewFactor() {
     if (this.newFactorObject.t.trim().length === 0) {
-      this.newFactorInvalid=true;
+      this.newFactorInvalid = true;
     } else {
       try {
         this._dataService
@@ -153,14 +155,40 @@ export class FactorsEditComponent implements OnInit {
       }
     }
   }
-  
-  randomColor () {
+
+  randomColor() {
     let color = '#';
-    for (let i = 0; i < 6; i++){
-       const random = Math.random();
-       const bit = (random * 16) | 0;
-       color += (bit).toString(16);
-    };
+    for (let i = 0; i < 6; i++) {
+      const random = Math.random();
+      const bit = (random * 16) | 0;
+      color += bit.toString(16);
+    }
     return color;
- };
+  }
+
+  /**
+   * Updates factor without reloading all data
+   * @param uf updatedFactor
+   */
+  updateFactorStyle(uf: Factors) {
+    let notFound = true;
+    let i = 0;
+    while (notFound && this.factorsList[i]) {
+      if (this.factorsList[i].id === uf.id) {
+        this.factorsList[i].color = uf.color;
+        this.factorsList[i].title = uf.title;
+        notFound=false;
+      }else{
+        i++;
+      }
+    }
+  }
+  getStyle(factor: Factors) {
+    return {
+      color: factor.color,
+      'font-weight': 'bold',
+      border: `2px solid ${factor.color}`,
+      background: `${factor.color}33`,
+    };
+  }
 }

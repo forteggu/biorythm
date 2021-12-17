@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { getUserId, openModal } from 'src/app/Commons/commons';
 import { DataService } from 'src/app/Services/data.service';
-import { db, Users, Factors, Data } from '../../db/db';
-interface defaultData {
+import { Factors, Data } from '../../db/db';
+interface dataStructure {
   factors: Factors[];
   data: Data[];
 }
@@ -31,10 +31,44 @@ export class ChartViewComponent implements OnInit {
       openModal({ t: 'Exception', b: e as string });
     }
   }
+  /**
+   * fill empty days so that all factors display the correct information
+   * @param data data that contains all the chart information and values
+   * @param labels labels to display (dates)
+   */
+  preprocesssData(labels: string[], data: dataStructure) {
+    labels.map((l) => {
+      data.factors.map((f) => {
+        let factorHasDate = false;
+        let i=0;
+        while(data.data[i] && !factorHasDate){
+          if (f.id===data.data[i].factorId && this.formatDate(data.data[i].date) === l) {
+            factorHasDate = true;
+          }
+          i++;
+        }
+        if(!factorHasDate){
+          let newReg:Data={} as Data;
+          newReg.date=l;
+          newReg.factorId=f.id!;
+          newReg.userId=getUserId();
+          newReg.value=0;
+          data.data.push(newReg);
+        }
+      });
+    });
+  }
 
-  parseData(da: defaultData) {
+  parseData(da: dataStructure) {
     // Labels are the dates, no repeated values
     let labels = [...new Set(da.data.map((l) => this.formatDate(l.date)))];
+    // Reorder labels (dates) just in case
+    labels.sort((a, b) => {
+      let date1 = new Date(a);
+      let date2 = new Date(b);
+      return date1 < date2 ? -1 : 1;
+    });
+    this.preprocesssData(labels, da);
     // Reorder dates just in case
     da.data.sort((a, b) => {
       let date1 = new Date(a.date);
@@ -60,7 +94,7 @@ export class ChartViewComponent implements OnInit {
       datasets: datasets,
     };
   }
-  loadChart(chartData: defaultData) {
+  loadChart(chartData: dataStructure) {
     const parsedData = this.parseData(chartData);
     const ctx = document.getElementById('myChart')! as HTMLCanvasElement;
 
@@ -82,6 +116,6 @@ export class ChartViewComponent implements OnInit {
 
   formatDate(date: string) {
     let dateArray = date.split('-');
-    return dateArray[1] + '/' + dateArray[2]+'/'+dateArray[0];
+    return dateArray[1] + '/' + dateArray[2] + '/' + dateArray[0];
   }
 }
