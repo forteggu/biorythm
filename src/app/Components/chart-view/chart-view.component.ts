@@ -61,13 +61,14 @@ export class ChartViewComponent implements OnInit {
 
   parseData(da: dataStructure) {
     // Labels are the dates, no repeated values
-    let labels = [...new Set(da.data.map((l) => this.formatDate(l.date)))];
+    let labels = [...new Set(da.data.map((l) => l.date))];
     // Reorder labels (dates) just in case
     labels.sort((a, b) => {
       let date1 = new Date(a);
       let date2 = new Date(b);
       return date1 < date2 ? -1 : 1;
     });
+    labels = labels.map(l => this.formatDate(l));
     this.preprocesssData(labels, da);
     // Reorder dates just in case
     da.data.sort((a, b) => {
@@ -75,6 +76,7 @@ export class ChartViewComponent implements OnInit {
       let date2 = new Date(b.date);
       return date1 < date2 ? -1 : 1;
     });
+
     // Create dataset structure
     let datasets = da.factors.map((e) => {
       return {
@@ -95,6 +97,7 @@ export class ChartViewComponent implements OnInit {
     };
   }
   loadChart(chartData: dataStructure) {
+    console.log(chartData);
     const parsedData = this.parseData(chartData);
     const ctx = document.getElementById('myChart')! as HTMLCanvasElement;
 

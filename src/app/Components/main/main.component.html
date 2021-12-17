@@ -1,37 +1,40 @@
+<div class="customWrapper">
 
-<app-main-nav>
-</app-main-nav>
-<hr>
-<!-- Full screen modal -->
-<router-outlet>
-</router-outlet>
+  <app-main-nav>
+  </app-main-nav>
+  <hr>
+  <!-- Full screen modal -->
+  <router-outlet>
+  </router-outlet>
 
-<!-- Button to Open the Modal -->
-<button style="display: none;" id="infoModalTrigger" type="button" class="btn btn-primary" data-toggle="modal" data-target="#infoModal">
+  <!-- Button to Open the Modal -->
+  <button style="display: none;" id="infoModalTrigger" type="button" class="btn btn-primary" data-toggle="modal"
+    data-target="#infoModal">
     Modal Trigger Button
   </button>
-  
+
   <!-- The Modal -->
   <div class="modal" id="infoModal">
     <div class="modal-dialog">
       <div class="modal-content">
-  
+
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 id="modal-title" class="modal-title"></h4>
           <button type="button" class="btn-close" data-dismiss="modal"></button>
         </div>
-  
+
         <!-- Modal body -->
         <div id="modal-body" class="modal-body">
-         
+
         </div>
-  
+
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
-  
+
       </div>
     </div>
   </div>
+</div>

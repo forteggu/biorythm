@@ -187,8 +187,7 @@ export class FactorsEditComponent implements OnInit {
     return {
       color: factor.color,
       'font-weight': 'bold',
-      border: `2px solid ${factor.color}`,
-      background: `${factor.color}33`,
+      border: `1px solid ${factor.color}`
     };
   }
 }
