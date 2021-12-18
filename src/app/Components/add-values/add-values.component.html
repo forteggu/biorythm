@@ -3,18 +3,18 @@
   <div class="row">
     <div class="col" *ngIf="!noFactors">
       <form>
-        <div *ngFor="let factor of factorsList" class="input-group mb-3">
-          <span class="input-group-text" [style]="getStyle(factor)" id="factor.title_label">{{factor.title}}</span>
-          <input [style]="{color:factor.color}" [(ngModel)]="rangeValues[factor.id!]" id="rangeValueInput_{{factor.id}}"
-            name="rangeValueInput_{{factor.id}}" class="ml-2" type="range" min="0" max="10" />
-          <output [style]="{color:factor.color}" id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
-        </div>
         <div class="input-group mb-3">
           <span class="input-group-text" id="datePicker">Date</span>
           <input class="ml-2" (change)="onChangeDate()" type="date" [(ngModel)]="date" name="valuesDate">
         </div>
         <div *ngIf="!validDate" class="alert alert-warning" role="alert">
           There are existing values for that date already, upon accepting those values will be updated
+        </div>
+        <div *ngFor="let factor of factorsList" class="input-group mb-3">
+          <span class="input-group-text" [style]="getStyle(factor)" id="factor.title_label">{{factor.title}}</span>
+          <input [style]="{color:factor.color}" [(ngModel)]="rangeValues[factor.id!]" id="rangeValueInput_{{factor.id}}"
+            name="rangeValueInput_{{factor.id}}" class="ml-2" type="range" min="0" max="10" />
+          <output [style]="{color:factor.color}" id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
         </div>
       </form>
       <div>

@@ -114,6 +114,11 @@ export class AddValuesComponent implements OnInit {
           this.validDate = count > 0 ? false : true;
           if (count > 0) {
             this.validDate = false;
+            this._dataService.getAlreadyRegisteredFactors(this.date).then((r) => {
+              r.map((i) => {
+                this.rangeValues[i.factorId]=i.value;
+              });
+            });
           } else {
             this.validDate = true;
           }
