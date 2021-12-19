@@ -16,15 +16,23 @@
             name="rangeValueInput_{{factor.id}}" class="ml-2" type="range" min="0" max="10" />
           <output [style]="{color:factor.color}" id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
         </div>
+        <div class="">
+          Notes:
+          <div contenteditable="true" class="editableDiv" (keypress)="onInputNotes($event)" id="addValuesNotes" aria-label="With textarea"></div>
+        </div>
       </form>
-      <div>
-        <button (click)="onClickSave()" [disabled]="!validForm" class="btn btn-primary">Save</button>
-        <button (click)="onReset()" class="btn btn-secondary">Reset</button>
-      </div>
     </div>
     <div *ngIf="noFactors" class="alert alert-primary" role="alert">
       There are no factors to value yet, please create some first.
     </div>
+  </div>
+  <div class="row justify-content-between mt-3 spreadButtons">
+    <div class="col">
+      <button (click)="onClickSave()" [disabled]="!validForm" class="btn btn-primary">Save</button>
+    </div>
+    <div class="col">
+      <button (click)="onReset()" class="btn btn-secondary">Reset</button>
+    </div>  
   </div>
 </div>
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { db, Users, Factors, Data } from '../db/db';
+import { db, Users, Factors, Data, Note } from '../db/db';
 import { liveQuery } from 'dexie';
 import { getUserId } from '../Commons/commons';
 @Injectable({
@@ -65,4 +65,19 @@ export class DataService {
   async saveUpdateRegisters(data:Data[]){
     return await db.iData.bulkPut(data);
   }
+
+  async getNotes(){
+    return await db.iNote.toArray();
+  }
+
+  async getNotesByDate(date:string){
+    return await db.iNote.toArray();
+  }
+  async addNote(reg:Note){
+    return await db.iNote.add(reg);
+  }
+  async addUpdateNote(reg:Note){
+    return await db.iNote.put(reg);
+  }
+
 }

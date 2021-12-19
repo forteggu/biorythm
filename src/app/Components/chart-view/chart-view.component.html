@@ -1,7 +1,18 @@
-
 <div *ngIf="showChart" class="chartContainer">
     <canvas id="myChart" class="chart"></canvas>
+    <hr>
+    <div class="row">
+        <div *ngFor="let n of notes" class="col-12">
+            <div class="noteContent">
+                {{n.value}}
+            </div>
+            <div class="noteDate">
+                {{n.date}}
+            </div>
+        
+        </div>
+    </div>
 </div>
 <div *ngIf="showAlert" class="alert alert-primary" role="alert">
-   No data to show yet!  
+    No data to show yet!
 </div>

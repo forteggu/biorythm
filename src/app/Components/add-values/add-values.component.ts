@@ -16,6 +16,8 @@ export class AddValuesComponent implements OnInit {
   noFactors: boolean = false;
   validForm: boolean = false;
   alreadyUsedFactors: { id: number; desc: string; val: number }[] = [];
+  tagTrigger: string = '@';
+  isTypingTag: boolean = false;
 
   constructor(private _dataService: DataService, private _router: Router) {}
   ngOnInit(): void {
@@ -66,8 +68,15 @@ export class AddValuesComponent implements OnInit {
         } as Data;
       });
       try {
-        this._dataService.addDayData(regList);
-        this._router.navigateByUrl('main/chartView');
+        this._dataService.addDayData(regList).then((r) => {
+          if (this.getNotesContent().length > 0) {
+            this._dataService.addNote({
+              date: this.date,
+              value: this.getNotesContent(),
+            });
+          }
+          this._router.navigateByUrl('main/chartView');
+        });
       } catch (e: any) {
         // Modal: something went wrong
         openModal({ t: 'Exception', b: e as string });
@@ -89,11 +98,17 @@ export class AddValuesComponent implements OnInit {
     });
     try {
       this._dataService.saveUpdateRegisters(updatedRegs).then((result) => {
-        const b: HTMLElement = document.getElementById(
-          'cancelConfirmationModalButton_addValues'
-        ) as HTMLElement;
-        b.click();
-        this._router.navigateByUrl('main/chartView');
+        if (this.getNotesContent().length > 0) {
+          this._dataService
+            .addUpdateNote({ date: this.date, value: this.getNotesContent() })
+            .then((nu) => {
+              const b: HTMLElement = document.getElementById(
+                'cancelConfirmationModalButton_addValues'
+              ) as HTMLElement;
+              b.click();
+              this._router.navigateByUrl('main/chartView');
+            });
+        }
       });
     } catch (e: any) {
       // Modal: something went wrong
@@ -114,11 +129,19 @@ export class AddValuesComponent implements OnInit {
           this.validDate = count > 0 ? false : true;
           if (count > 0) {
             this.validDate = false;
-            this._dataService.getAlreadyRegisteredFactors(this.date).then((r) => {
-              r.map((i) => {
-                this.rangeValues[i.factorId]=i.value;
+            this._dataService
+              .getAlreadyRegisteredFactors(this.date)
+              .then((r) => {
+                r.map((i) => {
+                  this.rangeValues[i.factorId] = i.value;
+                });
+                this._dataService.getNotesByDate(this.date).then(n=>{
+                  if(n && n.length>0){
+                    const element = document.getElementById('addValuesNotes') as HTMLElement;
+                    element.innerHTML=n[0].value;
+                  }
+                })
               });
-            });
           } else {
             this.validDate = true;
           }
@@ -132,6 +155,8 @@ export class AddValuesComponent implements OnInit {
     this.date = '';
     this.validForm = false;
     this.validDate = true;
+    const element = document.getElementById('addValuesNotes') as HTMLElement;
+    element.innerHTML="";
   }
 
   getStyle(factor: Factors) {
@@ -141,5 +166,32 @@ export class AddValuesComponent implements OnInit {
       border: `2px solid ${factor.color}`,
       background: `${factor.color}33`,
     };
+  }
+
+  onInputNotes($event: KeyboardEvent) {
+    /*// Factor Tags: @
+    // We detect factor tags by analyzing the inputs in search of the tag char
+    if ($event.key === this.tagTrigger) {
+      if (this.isTypingTag) {
+        console.log('tag inválido');
+        this.isTypingTag = false;
+      } else {
+        console.log('detectado el comienzo de un tag');
+        this.isTypingTag = true;
+      }
+    }
+    const tagBreakers = [""," ","Enter"];
+    console.log($event.key);
+    if(tagBreakers.indexOf($event.key)!==-1){
+      // We should analyze if the tag is complete and matches with existing tags
+      
+    }
+
+    // Custom tags: #
+*/
+  }
+  getNotesContent() {
+    const element = document.getElementById('addValuesNotes') as HTMLElement;
+    return element.textContent || '';
   }
 }

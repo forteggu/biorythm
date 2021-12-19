@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { getUserId, openModal } from 'src/app/Commons/commons';
 import { DataService } from 'src/app/Services/data.service';
-import { Factors, Data } from '../../db/db';
+import { Factors, Data, Note } from '../../db/db';
 interface dataStructure {
   factors: Factors[];
   data: Data[];
@@ -15,6 +15,7 @@ interface dataStructure {
 export class ChartViewComponent implements OnInit {
   showChart: boolean = true;
   showAlert: boolean = false;
+  notes: Note[] = [];
   constructor(private _dataService: DataService) {}
   ngOnInit(): void {
     try {
@@ -22,6 +23,9 @@ export class ChartViewComponent implements OnInit {
       this._dataService.checkUserHasData(getUserId()).then((h) => {
         if (h > 0) {
           this._dataService.getData().then((data) => this.loadChart(data));
+          this._dataService.getNotes().then((notes) => {
+            this.notes = notes;
+          });
         } else {
           this.showAlert = true;
           this.showChart = false;
@@ -40,20 +44,20 @@ export class ChartViewComponent implements OnInit {
     labels.map((l) => {
       data.factors.map((f) => {
         let factorHasDate = false;
-        let i=0;
-        while(data.data[i] && !factorHasDate){
-         if (f.id===data.data[i].factorId && data.data[i].date === l) {
+        let i = 0;
+        while (data.data[i] && !factorHasDate) {
+          if (f.id === data.data[i].factorId && data.data[i].date === l) {
             factorHasDate = true;
           }
           i++;
         }
-        
-        if(!factorHasDate){
-          let newReg:Data={} as Data;
-          newReg.date=l;
-          newReg.factorId=f.id!;
-          newReg.userId=getUserId();
-          newReg.value=0;
+
+        if (!factorHasDate) {
+          let newReg: Data = {} as Data;
+          newReg.date = l;
+          newReg.factorId = f.id!;
+          newReg.userId = getUserId();
+          newReg.value = 0;
           data.data.push(newReg);
         }
       });
@@ -70,13 +74,13 @@ export class ChartViewComponent implements OnInit {
       return date1 < date2 ? -1 : 1;
     });
     this.preprocesssData(labels, da);
-    labels = labels.map(l => this.formatDate(l));
-    const avgValuesDataSet={
-      label:"Average",
-      data:this.calcAvg(labels,da.data),
-      fill:true,
-      borderColor:"rgba(255,0,0,0.8)",
-      tension:0
+    labels = labels.map((l) => this.formatDate(l));
+    const avgValuesDataSet = {
+      label: 'Average',
+      data: this.calcAvg(labels, da.data),
+      fill: true,
+      borderColor: 'rgba(255,0,0,0.8)',
+      tension: 0,
     };
     // Reorder dates just in case
     da.data.sort((a, b) => {
@@ -129,19 +133,19 @@ export class ChartViewComponent implements OnInit {
     return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
   }
 
-  calcAvg(labels:string[] ,data:Data[]){
-    let avgValuesPerDay:number[]=[];
-    labels.map(l=>{
-      let sumDia=0;
-      let fCount=0;
-      for(let d of data){
-        if(this.formatDate(d.date)===l){
-          sumDia+=d.value;
+  calcAvg(labels: string[], data: Data[]) {
+    let avgValuesPerDay: number[] = [];
+    labels.map((l) => {
+      let sumDia = 0;
+      let fCount = 0;
+      for (let d of data) {
+        if (this.formatDate(d.date) === l) {
+          sumDia += d.value;
           fCount++;
         }
       }
-      avgValuesPerDay.push(sumDia/fCount);
+      avgValuesPerDay.push(sumDia / fCount);
     });
-   return avgValuesPerDay;
+    return avgValuesPerDay;
   }
 }

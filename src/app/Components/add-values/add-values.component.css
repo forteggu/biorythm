@@ -97,3 +97,17 @@ input[type=range]:focus::-ms-fill-upper {
 
 .confirmUpdateGrid_body{
 }
+
+.spreadButtons>.col:last-child{
+  text-align: right;
+}
+
+div.editableDiv{
+  padding: 0.25em;
+  border: 2px solid #ced4da;
+  border-radius: 5px;
+  max-width: 80vw;
+  width: 100%;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}

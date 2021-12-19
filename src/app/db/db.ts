@@ -20,16 +20,24 @@ export interface Data {
   value: number;
 }
 
+export interface Note {
+  id?:number;
+  date: string;
+  value: string;
+}
+
 export class AppDB extends Dexie {
   iUsers!: Table<Users, number>;
   iFactors!: Table<Factors, number>;
   iData!: Table<Data, number>;
+  iNote!: Table<Note, number>;
 
   constructor() {
     super('BiorChartData');
     this.version(1).stores({
       iUsers: '++id,name',
       iFactors: '++id,[userId+title]',
+      iNote: '[date]',
       iData: '[factorId+userId+date],[userId+factorId],[userId+date],userId',
     });
   }
