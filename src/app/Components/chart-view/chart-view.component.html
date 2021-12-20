@@ -1,21 +1,27 @@
-<div *ngIf="showChart" class="chartContainer">
-    <canvas id="myChart" class="chart"></canvas>
-    <div class="chartNavigationButtons">
-        <button class="btn btn-primary">-15</button>
-        <button class="btn btn-primary">+15</button>
-    </div>
-    <hr>
-    <div class="notesContainer">
-        <div *ngFor="let n of notes">
-            <div class="noteContent">
-                <div class="noteDate">
-                    {{n.date}}
+<div class="container">
+    <div *ngIf="showChart" class="chartContainer">
+        <canvas id="myChart" class="chart"></canvas>
+        <div class="chartNavigationButtons row">
+            <div class="col">
+                <button class="btn btn-primary">-15</button>
+            </div>
+            <div class="col text-right">
+                <button class="btn btn-primary">+15</button>
+            </div>
+        </div>
+        <hr>
+        <div class="notesContainer">
+            <div *ngFor="let n of notes">
+                <div class="noteContent">
+                    <div class="noteDate">
+                        {{n.date}}
+                    </div>
+                    {{n.value}}
                 </div>
-                {{n.value}}
             </div>
         </div>
     </div>
-</div>
-<div *ngIf="showAlert" class="alert alert-primary" role="alert">
-    No data to show yet!
+    <div *ngIf="showAlert" class="alert alert-primary" role="alert">
+        No data to show yet!
+    </div>
 </div>
