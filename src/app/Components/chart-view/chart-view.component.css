@@ -1,0 +1,21 @@
+.notesContainer {
+  width: 98vw;
+  margin: auto;
+  font-size: 1.2em;
+}
+.noteContent {
+  border-radius: 10px;
+  padding: 0.5em;
+  margin: 0.5em;
+  border: 1px solid #007bff;
+  background: #007bffaa;
+  color: white;
+}
+.noteDate {
+  margin: 0.5em;
+  text-align: right;
+  font-weight: bold;
+  font-style: italic;
+  text-decoration: underline;
+  font-size: 0.9em;
+}

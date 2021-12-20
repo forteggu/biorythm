@@ -1,15 +1,18 @@
 <div *ngIf="showChart" class="chartContainer">
     <canvas id="myChart" class="chart"></canvas>
+    <div class="chartNavigationButtons">
+        <button class="btn btn-primary">-15</button>
+        <button class="btn btn-primary">+15</button>
+    </div>
     <hr>
-    <div class="row">
-        <div *ngFor="let n of notes" class="col-12">
+    <div class="notesContainer">
+        <div *ngFor="let n of notes">
             <div class="noteContent">
+                <div class="noteDate">
+                    {{n.date}}
+                </div>
                 {{n.value}}
             </div>
-            <div class="noteDate">
-                {{n.date}}
-            </div>
-        
         </div>
     </div>
 </div>
