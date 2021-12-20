@@ -71,7 +71,7 @@ export class DataService {
   }
 
   async getNotesByDate(date:string){
-    return await db.iNote.toArray();
+    return await db.iNote.where({date:date}).toArray();
   }
   async addNote(reg:Note){
     return await db.iNote.add(reg);

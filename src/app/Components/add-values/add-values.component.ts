@@ -18,6 +18,7 @@ export class AddValuesComponent implements OnInit {
   alreadyUsedFactors: { id: number; desc: string; val: number }[] = [];
   tagTrigger: string = '@';
   isTypingTag: boolean = false;
+  tagPosition:number = 0 ;
 
   constructor(private _dataService: DataService, private _router: Router) {}
   ngOnInit(): void {
@@ -135,12 +136,14 @@ export class AddValuesComponent implements OnInit {
                 r.map((i) => {
                   this.rangeValues[i.factorId] = i.value;
                 });
-                this._dataService.getNotesByDate(this.date).then(n=>{
-                  if(n && n.length>0){
-                    const element = document.getElementById('addValuesNotes') as HTMLElement;
-                    element.innerHTML=n[0].value;
+                this._dataService.getNotesByDate(this.date).then((n) => {
+                  if (n && n.length > 0) {
+                    const element = document.getElementById(
+                      'addValuesNotes'
+                    ) as HTMLElement;
+                    element.innerHTML = n[0].value;
                   }
-                })
+                });
               });
           } else {
             this.validDate = true;
@@ -156,7 +159,7 @@ export class AddValuesComponent implements OnInit {
     this.validForm = false;
     this.validDate = true;
     const element = document.getElementById('addValuesNotes') as HTMLElement;
-    element.innerHTML="";
+    element.innerHTML = '';
   }
 
   getStyle(factor: Factors) {
@@ -169,7 +172,8 @@ export class AddValuesComponent implements OnInit {
   }
 
   onInputNotes($event: KeyboardEvent) {
-    /*// Factor Tags: @
+   /* const el = document.getElementById('addValuesNotes')!;
+    // Factor Tags: @
     // We detect factor tags by analyzing the inputs in search of the tag char
     if ($event.key === this.tagTrigger) {
       if (this.isTypingTag) {
@@ -178,17 +182,30 @@ export class AddValuesComponent implements OnInit {
       } else {
         console.log('detectado el comienzo de un tag');
         this.isTypingTag = true;
+        console.log("event", $event.target);
       }
     }
-    const tagBreakers = [""," ","Enter"];
+    const tagBreakers = ['', ' ', 'Enter','#'];
     console.log($event.key);
-    if(tagBreakers.indexOf($event.key)!==-1){
+    if (this.isTypingTag && tagBreakers.indexOf($event.key) !== -1) {
       // We should analyze if the tag is complete and matches with existing tags
+      $event.preventDefault();
+      const selection = window.getSelection()!;
+      const range = document.createRange();
+      //selection.removeAllRanges();
+      console.log("tag position", this.tagPosition);
+      console.log("el.textContent.length",el.textContent!.length);
+      console.log("cuantos caracteres coge?",el.textContent!.length-this.tagPosition);
       
+      //range.setStart(el.childNodes[0],el.textContent!.length-this.tagPosition); //el.textContent!.length-this.tagPosition
+      range.setStart(el.childNodes[0],this.tagPosition); //el.textContent!.length-this.tagPosition
+      console.log("number of child nodes", el.childNodes);  
+      range.setEnd(el.childNodes[0],10);
+      selection.addRange(range);
+      this.isTypingTag=false;
     }
-
-    // Custom tags: #
 */
+    // Custom tags: #
   }
   getNotesContent() {
     const element = document.getElementById('addValuesNotes') as HTMLElement;
