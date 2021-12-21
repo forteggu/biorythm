@@ -38,7 +38,7 @@ export class AppDB extends Dexie {
       iUsers: '++id,name',
       iFactors: '++id,[userId+title]',
       iNote: 'date',
-      iData: '[factorId+userId+date],[userId+factorId],[userId+date],userId',
+      iData: '[factorId+userId+date],[userId+factorId],[userId+date],userId,date',
     });
   }
 

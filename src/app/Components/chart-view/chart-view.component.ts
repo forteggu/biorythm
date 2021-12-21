@@ -16,16 +16,33 @@ export class ChartViewComponent implements OnInit {
   showChart: boolean = true;
   showAlert: boolean = false;
   notes: Note[] = [];
+  dateFrom: string = '';
+  dateTo: string = '';
+  noDataForDateInterval:boolean=true;
+  invalidDateInterval:boolean=false;
   constructor(private _dataService: DataService) {}
   ngOnInit(): void {
+    this.dateFrom=this.getFormattedDate(this.getInitialDateFrom());
+    this.dateTo=this.getFormattedDate(this.getInitialDateTo());
+    this.fetchData();
+  }
+  fetchData(){
     try {
       // if there is no data chart is not displayed
       this._dataService.checkUserHasData(getUserId()).then((h) => {
         if (h > 0) {
-          this._dataService.getData().then((data) => this.loadChart(data));
-          this._dataService.getNotes().then((notes) => {
-            this.notes = notes;
-          });
+          this._dataService.checkUserHasDataDateInterval(this.dateFrom,this.correctDateTo()).then((hi) => {
+            if(hi>0){
+              this.noDataForDateInterval=false;
+              this._dataService.getDataInterval(this.dateFrom,this.correctDateTo()).then((data) => this.loadChart(data));
+              this._dataService.getNotesByDateRange(this.dateFrom,this.correctDateTo()).then((notes) => {
+                this.notes = notes;
+              });
+            }else{
+              this.noDataForDateInterval=true;
+            }
+          })
+
         } else {
           this.showAlert = true;
           this.showChart = false;
@@ -34,6 +51,36 @@ export class ChartViewComponent implements OnInit {
     } catch (e) {
       openModal({ t: 'Exception', b: e as string });
     }
+  }
+  getFormattedDate(date:Date) {
+    const day = date.getDate().toString();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return (
+      year +
+      '-' +
+      (month.toString().length === 1 ? '0' + month : month) +
+      '-' +
+      (day.length === 1 ? '0' + day : day)
+    );
+  }
+  correctDateTo(){
+    let dateToTime  = new Date(this.dateTo).getTime();
+    const dateCorrection = dateToTime + (1000 * 60 * 60 * 24);
+    return(this.getFormattedDate(new Date(dateCorrection)));
+  }
+  getInitialDateFrom() {
+    let dateToday = new Date();
+    let biWeek = 1000 * 60 * 60 * 24 * 14;
+    let sum = dateToday.getTime() - biWeek; //getTime devuelve milisegundos de esa fecha
+    return new Date(sum);
+  }
+
+  getInitialDateTo() {
+    let dateToday = new Date();
+    let biWeek = 1000 * 60 * 60 * 24 * 14;
+    let deduction = dateToday.getTime() + biWeek; //getTime devuelve milisegundos de esa fecha
+    return new Date(deduction);
   }
   /**
    * fill empty days so that all factors display the correct information
@@ -111,7 +158,9 @@ export class ChartViewComponent implements OnInit {
   loadChart(chartData: dataStructure) {
     const parsedData = this.parseData(chartData);
     const ctx = document.getElementById('myChart')! as HTMLCanvasElement;
-
+    if(Chart.getChart(ctx)!==undefined){
+      Chart.getChart(ctx)?.destroy();
+    }
     const myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -147,5 +196,14 @@ export class ChartViewComponent implements OnInit {
       avgValuesPerDay.push(sumDia / fCount);
     });
     return avgValuesPerDay;
+  }
+
+  onChangeDateInterval() {
+    if(this.dateFrom>=this.dateTo){
+      this.invalidDateInterval=true;
+    }else{
+      this.invalidDateInterval=false;
+      this.fetchData();
+    }
   }
 }

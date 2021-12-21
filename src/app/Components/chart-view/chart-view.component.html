@@ -1,16 +1,29 @@
 <div class="container">
     <div *ngIf="showChart" class="chartContainer">
-        <canvas id="myChart" class="chart"></canvas>
+        <div *ngIf="noDataForDateInterval" class="alert alert-warning" role="alert">
+            No data for current interval
+        </div>
+        <canvas *ngIf="!noDataForDateInterval" id="myChart" class="chart"></canvas>
         <div class="chartNavigationButtons row">
             <div class="col">
-                <button class="btn btn-primary">-15</button>
+                <span class="input-group-text" id="datePickerFrom">From:</span>
+<input class="ml-2" (change)="onChangeDateInterval()" type="date" [(ngModel)]="dateFrom" name="chartDateFrom">
             </div>
             <div class="col text-right">
-                <button class="btn btn-primary">+15</button>
+                <span class="input-group-text" id="datePickerTo">To:</span>
+<input class="ml-2" (change)="onChangeDateInterval()" type="date" [(ngModel)]="dateTo" name="chartDateTo">
+            </div>
+            <div class="col-12">
+                <div *ngIf="invalidDateInterval" class="alert alert-warning" role="alert">
+                    No data for current interval
+                </div>
             </div>
         </div>
         <hr>
-        <div class="notesContainer">
+        <div *ngIf="noDataForDateInterval" class="alert alert-warning" role="alert">
+            No notes for current interval
+        </div>
+        <div *ngIf="!noDataForDateInterval" class="notesContainer">
             <div *ngFor="let n of notes">
                 <div class="noteContent">
                     <div class="noteDate">

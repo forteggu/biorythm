@@ -23,6 +23,12 @@ export class DataService {
     let f = await this.getFactors();
     return {data:d,factors:f};
   }
+
+  async getDataInterval(dateFrom:string,dateTo:string) {
+    let d = await db.iData.where('date').between(dateFrom,dateTo).toArray();
+    let f = await this.getFactors();
+    return {data:d,factors:f};
+  }
   async getFactors(){
     return await db.iFactors.toArray();
   }
@@ -49,6 +55,10 @@ export class DataService {
   async checkUserHasData(userId:number){
     return await db.iData.where('userId').equals(userId).count();
   }
+  
+  async checkUserHasDataDateInterval(dateFrom:string,dateTo:string){
+    return await db.iData.where('date').between(dateFrom,dateTo).count();
+  }
 
   async removeFactorsData(factorId:number){
     return await db.iData.where({userId:getUserId(),factorId:factorId}).delete();
@@ -72,6 +82,10 @@ export class DataService {
 
   async getNotesByDate(date:string){
     return await db.iNote.where({date:date}).toArray();
+  }
+
+  async getNotesByDateRange(dateFrom:string,dateTo:string){
+    return await db.iNote.where('date').between(dateFrom,dateTo).toArray();
   }
   async addNote(reg:Note){
     return await db.iNote.add(reg);
