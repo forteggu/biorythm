@@ -1,23 +1,27 @@
-.input-group{
-    width: 100%;
+
+.input-group {
+  width: 100%;
 }
-.input-group-text{
-    width: 10rem;
-    text-align: left;
+.input-group-text {
+  width: 10rem;
+  text-align: left;
 }
-output{
-  margin-left:0.5em;
+input[type="date"] {
+  margin-left: 1.5em !important;
+}
+output {
+  margin-left: 0.5em;
   font-weight: bold;
   font-size: 1.15em;
 }
-input[type=range] {
+input[type="range"] {
   -webkit-appearance: none;
   margin: 10px 0;
 }
-input[type=range]:focus {
+input[type="range"]:focus {
   outline: none;
 }
-input[type=range]::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 10px;
   cursor: pointer;
@@ -27,87 +31,121 @@ input[type=range]::-webkit-slider-runnable-track {
   border-radius: 5px;
   border: 1px solid #000000;
 }
-input[type=range]::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
   box-shadow: 1px 1px 1px #000000;
   border: 1px solid #000000;
   height: 30px;
   width: 15px;
   border-radius: 5px;
-  background: #FFFFFF;
+  background: #ffffff;
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -11px;
 }
-input[type=range]:focus::-webkit-slider-runnable-track {
+input[type="range"]:focus::-webkit-slider-runnable-track {
   background: #007bffbb;
 }
-input[type=range]::-moz-range-track {
+input[type="range"]::-moz-range-track {
   width: 100%;
   height: 10px;
   cursor: pointer;
   animate: 0.2s;
   box-shadow: 1px 1px 1px #000000;
-  background: #007bffbb ;
+  background: #007bffbb;
   border-radius: 5px;
   border: 1px solid #000000;
 }
-input[type=range]::-moz-range-thumb {
+input[type="range"]::-moz-range-thumb {
   box-shadow: 1px 1px 1px #000000;
   border: 1px solid #000000;
-  background: #FFFFFF;
+  background: #ffffff;
   height: 1.5em;
   cursor: pointer;
 }
-input[type=range]::-ms-track {
+input[type="range"]::-ms-track {
   cursor: pointer;
   animate: 0.2s;
   background: transparent;
   border-color: transparent;
   color: transparent;
 }
-input[type=range]::-ms-fill-lower {
+input[type="range"]::-ms-fill-lower {
   background: #007bffbb;
   border: 1px solid #000000;
   border-radius: 10px;
   box-shadow: 1px 1px 1px #000000;
 }
-input[type=range]::-ms-fill-upper {
+input[type="range"]::-ms-fill-upper {
   background: #007bffbb;
   border: 1px solid #000000;
   border-radius: 10px;
   box-shadow: 1px 1px 1px #000000;
 }
-input[type=range]::-ms-thumb {
+input[type="range"]::-ms-thumb {
   margin-top: 1px;
   box-shadow: 1px 1px 1px #000000;
   border: 1px solid #000000;
   border-radius: 5px;
-  background: #FFFFFF;
+  background: #ffffff;
   cursor: pointer;
 }
-input[type=range]:focus::-ms-fill-lower {
+input[type="range"]:focus::-ms-fill-lower {
   background: #007bffbb;
 }
-input[type=range]:focus::-ms-fill-upper {
+input[type="range"]:focus::-ms-fill-upper {
   background: #007bffbb;
 }
 
-.confirmUpdateGrid_head{
+#confirmationModal-body_addValues {
+  font-size: 1.15em;
+}
+.modal-dialog {
+  max-width: 50vw !important;
+}
+.confirmUpdateGrid_head > div {
+  font-weight: bold;
+  border: 1px solid white;
+  background: #007bffbb;
+  color: white;
 }
 
-.confirmUpdateGrid_body{
+.confirmUpdateGrid_body > div {
+  border: 1px solid #007bffbb;
+}
+.padding_04em {
+  padding: 0.4em;
+}
+.spreadButtons {
+  display: flex;
+  justify-content: space-around;
 }
 
-.spreadButtons>.col:last-child{
-  text-align: right;
-}
-
-div.editableDiv{
+div.editableDiv {
   padding: 0.25em;
   border: 2px solid #ced4da;
   border-radius: 5px;
-  max-width: 80vw;
-  width: 100%;
+  width: 86%;
   overflow: auto;
   overflow-wrap: anywhere;
+}
+
+@media only screen and (min-width: 767px) {
+  #confirmationModal_addValues .modal-dialog {
+    max-width: 80vw !important;
+  }
+}
+@media only screen and (max-width: 767px) {
+  #confirmationModal_addValues .modal-dialog {
+    max-width: 100vw !important;
+  }
+  .input-group-text{
+    text-align: center !important;
+  }
+  input[type=date] {
+    margin-left: auto !important;
+    margin-top: 1em;
+  }
+  div.editableDiv {
+    width: 100%;
+  }
 }

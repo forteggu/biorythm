@@ -1,38 +1,42 @@
 <div class="container">
-
-  <div class="row">
-    <div class="col" *ngIf="!noFactors">
-      <form>
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="datePicker">Date</span>
-          <input class="ml-2" (change)="onChangeDate()" type="date" [(ngModel)]="date" name="valuesDate">
-        </div>
-        <div *ngIf="!validDate" class="alert alert-warning" role="alert">
-          There are existing values for that date already, upon accepting those values will be updated
-        </div>
-        <div *ngFor="let factor of factorsList" class="input-group mb-3">
-          <span class="input-group-text" [style]="getStyle(factor)" id="factor.title_label">{{factor.title}}</span>
+  <div *ngIf="noFactors" class="alert alert-primary" role="alert">
+    There are no factors to value yet, please create some first.
+  </div>
+  <div class="col mt-5" *ngIf="!noFactors">
+    <form>
+      <div class="row justify-content-center">
+        <div *ngFor="let factor of factorsList" class="input-group mb-3  col-10">
+          <span class="input-group-text col-12 col-md-5" [style]="getStyle(factor)"
+            id="factor.title_label">{{factor.title}}</span>
           <input [style]="{color:factor.color}" [(ngModel)]="rangeValues[factor.id!]" id="rangeValueInput_{{factor.id}}"
-            name="rangeValueInput_{{factor.id}}" class="ml-2" type="range" min="0" max="10" />
+            name="rangeValueInput_{{factor.id}}" class="ml-2 col-12 col-md-5" type="range" min="0" max="10" />
           <output [style]="{color:factor.color}" id="rangevalue_factor.id">{{rangeValues[factor.id!]}}</output>
         </div>
-        <div class="">
-          Notes:
-          <div contenteditable="true" class="editableDiv" (keypress)="onInputNotes($event)" id="addValuesNotes" aria-label="With textarea"></div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="input-group mb-3 col-10">
+          <span class="input-group-text col-12 col-md-5" id="datePicker">Date</span>
+          <input class="ml-2 col-12 col-md-5" (change)="onChangeDate()" type="date" [(ngModel)]="date"
+            name="valuesDate">
+          <div *ngIf="!validDate" class="mt-3 alert alert-warning" role="alert">
+            There are existing values for that date already, upon accepting those values will be updated
+          </div>
         </div>
-      </form>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-10">
+          Notes:
+          <div contenteditable="true" class="editableDiv" (keypress)="onInputNotes($event)" id="addValuesNotes"
+            aria-label="With textarea"></div>
+        </div>
+      </div>
+    </form>
+    <div class="row mt-3">
+      <div class="col-10 spreadButtons">
+        <button (click)="onReset()" class="btn btn-secondary">Reset</button>
+        <button (click)="onClickSave()" [disabled]="!validForm" class="btn btn-primary">Save</button>
+      </div>
     </div>
-    <div *ngIf="noFactors" class="alert alert-primary" role="alert">
-      There are no factors to value yet, please create some first.
-    </div>
-  </div>
-  <div class="row justify-content-between mt-3 spreadButtons">
-    <div class="col">
-      <button (click)="onClickSave()" [disabled]="!validForm" class="btn btn-primary">Save</button>
-    </div>
-    <div class="col">
-      <button (click)="onReset()" class="btn btn-secondary">Reset</button>
-    </div>  
   </div>
 </div>
 
@@ -49,39 +53,40 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="confirmationModalTitle_addValues"></h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        <button type="button" (click)="closeConfirmationModalAddValues()" class="btn-close" data-dilgiss="modal"
+          aria-label="Close"></button>
       </div>
       <div id="confirmationModal-body_addValues" class="modal-body">
         Upon confirmation, all previous values will be updated, are you sure you want to update the following values?
         <hr>
-        <div class="confirmUpdateGrid_head text-center">
-          <div class="row">
-            <div class="col">
+        <div class="text-center">
+          <div class="confirmUpdateGrid_head row">
+            <div class="col-6 padding_04em">
               Factor
             </div>
-            <div class="col">
+            <div class="col-3 padding_04em">
               Current Value
             </div>
-            <div class="col">
+            <div class="col-3 padding_04em">
               New Value
             </div>
           </div>
           <div class="row confirmUpdateGrid_body text-center" *ngFor="let af of alreadyUsedFactors">
-            <div class="col">
+            <div class="col-6 padding_04em">
               {{af.desc}}
             </div>
-            <div class="col">
+            <div class="col-3 padding_04em">
               {{af.val}}
             </div>
-            <div class="col">
+            <div class="col-3 padding_04em">
               {{rangeValues[af.id]}}
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button id="cancelConfirmationModalButton_addValues" type="button" class="btn btn-secondary"
-          data-dismiss="modal">Cancel</button>
+        <button id="cancelConfirmationModalButton_addValues" (click)="closeConfirmationModalAddValues()" type="button"
+          class="btn btn-secondary" data-dilgiss="modal">Cancel</button>
         <button (click)="onSaveUpdate()" type="button" class="btn btn-primary">Accept</button>
       </div>
     </div>

@@ -8,7 +8,7 @@
                 <form action="" id="addFactorForm">
                     <div *ngFor="let f of factorsList">
                         <div class="form-group">
-                            <div class="input-group mb-3 innerMargin-025">
+                            <div id="input-group-wrapper" class="input-group mb-3 innerMargin-025">
                                 <input [ngStyle]="getStyle(f)" type="text" class="form-control"
                                     [disabled]="!factorsListEditionMap[f.id!].inEdition" placeholder="Factor..."
                                     aria-label="Factor's name" id="inputFactor_{{f.id}}"

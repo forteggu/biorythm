@@ -21,3 +21,13 @@ input[type=color]{
 .btn-outline-custom:hover{
     transform: scale(1.25);
 }
+
+@media only screen and (max-width: 767px) {
+    #input-group-wrapper {
+        display: -webkit-box;
+    }
+
+    #input-group-wrapper>input:first-child {
+        width: 100%;
+    }
+}

@@ -46,13 +46,10 @@ export class AddValuesComponent implements OnInit {
               id: i.factorId,
               desc: this.factorsList.filter((x) => x.id === i.factorId)[0]
                 .title,
-              val: i.value,
+              val: i.value
             };
           });
-          const b: HTMLElement = document.getElementById(
-            'confirmationModalTrigger_addValues'
-          ) as HTMLElement;
-          b.click();
+          this.closeConfirmationModalAddValues();
         });
       } catch (e) {}
     }
@@ -103,10 +100,7 @@ export class AddValuesComponent implements OnInit {
           this._dataService
             .addUpdateNote({ date: this.date, value: this.getNotesContent() })
             .then((nu) => {
-              const b: HTMLElement = document.getElementById(
-                'cancelConfirmationModalButton_addValues'
-              ) as HTMLElement;
-              b.click();
+              this.closeConfirmationModalAddValues();
               this._router.navigateByUrl('main/chartView');
             });
         }
@@ -210,5 +204,12 @@ export class AddValuesComponent implements OnInit {
   getNotesContent() {
     const element = document.getElementById('addValuesNotes') as HTMLElement;
     return element.textContent || '';
+  }
+
+  closeConfirmationModalAddValues(){
+    const b: HTMLElement = document.getElementById(
+      'confirmationModalTrigger_addValues'
+    ) as HTMLElement;
+    b.click();
   }
 }
