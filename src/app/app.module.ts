@@ -11,6 +11,8 @@ import { FactorsEditComponent } from './Components/factors-edit/factors-edit.com
 import { AddValuesComponent } from './Components/add-values/add-values.component';
 import { ChartViewComponent } from './Components/chart-view/chart-view.component';
 import { NotFoundComponent } from './Components/not-found/not-found.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +28,13 @@ import { NotFoundComponent } from './Components/not-found/not-found.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
