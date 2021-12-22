@@ -1,4 +1,3 @@
-
 .input-group {
   width: 100%;
 }
@@ -138,10 +137,10 @@ div.editableDiv {
   #confirmationModal_addValues .modal-dialog {
     max-width: 100vw !important;
   }
-  .input-group-text{
+  .input-group-text {
     text-align: center !important;
   }
-  input[type=date] {
+  input[type="date"] {
     margin-left: auto !important;
     margin-top: 1em;
   }

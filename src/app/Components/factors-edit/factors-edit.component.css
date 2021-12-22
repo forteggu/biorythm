@@ -24,20 +24,30 @@ input[type="color"] {
 }
 
 @media only screen and (max-width: 767px) {
-  #input-group-wrapper {
+  .input-group-wrapper {
     display: inherit;
   }
 
-  #input-group-wrapper > input {
+  .input-group-wrapper > input {
     display: inline-block;
   }
-  #input-group-wrapper > input[type="color"] {
+  .input-group-wrapper > input[type="color"] {
     height: 2.4em;
     vertical-align: middle;
   }
 
-  #input-group-wrapper > input[type="text"] {
+  .input-group-wrapper > input[type="text"] {
     display: block;
     width: 100%;
+  }
+  .input-group-wrapper>button:nth-child(1),
+  button:nth-child(3) {
+    position: absolute;
+    right: 3.5em;
+  }
+  .input-group-wrapper>button:nth-child(2),button:nth-child(4)
+   {
+    position: absolute;
+    right: 0em;
   }
 }
