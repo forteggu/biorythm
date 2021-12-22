@@ -18,3 +18,32 @@
   text-decoration: underline;
   font-size: 0.9em;
 }
+
+@media only screen and (max-width: 530px) {
+  .chartNavigationButtons {
+    text-align: center;
+  }
+  .chartNavigationButtons > div {
+    display: flex;
+  }
+  .chartNavigationButtons > div > *{
+
+  }
+}
+
+@media only screen and (max-width: 507px) {
+  .chartNavigationButtons {
+    text-align: center;
+  }
+  .chartNavigationButtons > div {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+  }
+  .chartNavigationButtons > div > span{
+    width: 5em;
+  }
+  .chartNavigationButtons > div > span{
+    width: 5em;
+  }
+}

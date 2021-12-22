@@ -4,14 +4,16 @@
             No data for current interval
         </div>
         <canvas *ngIf="!noDataForDateInterval" id="myChart" class="chart"></canvas>
-        <div class="chartNavigationButtons row">
+        <div class="chartNavigationButtons row mt-3">
             <div class="col">
                 <span class="input-group-text" id="datePickerFrom">From:</span>
-<input class="ml-2" (change)="onChangeDateInterval()" type="date" [(ngModel)]="dateFrom" name="chartDateFrom">
+                <input class="ml-2" (change)="onChangeDateInterval()" type="date" [(ngModel)]="dateFrom"
+                    name="chartDateFrom">
             </div>
             <div class="col text-right">
                 <span class="input-group-text" id="datePickerTo">To:</span>
-<input class="ml-2" (change)="onChangeDateInterval()" type="date" [(ngModel)]="dateTo" name="chartDateTo">
+                <input class="ml-2" (change)="onChangeDateInterval()" type="date" [(ngModel)]="dateTo"
+                    name="chartDateTo">
             </div>
             <div class="col-12">
                 <div *ngIf="invalidDateInterval" class="alert alert-warning" role="alert">
@@ -25,10 +27,10 @@
         </div>
         <div *ngIf="!noDataForDateInterval" class="notesContainer">
             <div *ngFor="let n of notes">
+                <div class="noteDate">
+                    {{n.date}}
+                </div>
                 <div class="noteContent">
-                    <div class="noteDate">
-                        {{n.date}}
-                    </div>
                     {{n.value}}
                 </div>
             </div>
