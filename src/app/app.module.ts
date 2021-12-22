@@ -10,6 +10,7 @@ import { MainNavComponent } from './Components/main-nav/main-nav.component';
 import { FactorsEditComponent } from './Components/factors-edit/factors-edit.component';
 import { AddValuesComponent } from './Components/add-values/add-values.component';
 import { ChartViewComponent } from './Components/chart-view/chart-view.component';
+import { NotFoundComponent } from './Components/not-found/not-found.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +19,8 @@ import { ChartViewComponent } from './Components/chart-view/chart-view.component
     MainNavComponent,
     FactorsEditComponent,
     AddValuesComponent,
-    ChartViewComponent
+    ChartViewComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

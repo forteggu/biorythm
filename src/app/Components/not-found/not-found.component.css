@@ -1,0 +1,13 @@
+h1{
+    font-size: 4em;
+    padding: 1em;
+}
+.wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper>div{
+    display: block;
+}

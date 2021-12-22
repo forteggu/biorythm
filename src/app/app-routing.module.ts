@@ -5,6 +5,7 @@ import { ChartViewComponent } from './Components/chart-view/chart-view.component
 import { FactorsEditComponent } from './Components/factors-edit/factors-edit.component';
 import { LoginComponent } from './Components/login/login.component';
 import { MainComponent } from './Components/main/main.component';
+import { NotFoundComponent } from './Components/not-found/not-found.component';
 
 const routes: Routes = [
   {path:'main', component:MainComponent, children:[
@@ -21,7 +22,8 @@ const routes: Routes = [
       component:AddValuesComponent
     }
   ]},
-  {path:'', component:LoginComponent}
+  {path:'', component:ChartViewComponent},
+  {path:'**',component:NotFoundComponent}
 ];
 
 @NgModule({
